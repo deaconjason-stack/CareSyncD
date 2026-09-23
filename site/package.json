@@ -1,0 +1,15 @@
+{
+  "name": "caresyncd-permanent",
+  "version": "3.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.mjs",
+    "check": "node scripts/check-project.mjs",
+    "check:site": "node --test tests/pwa/static-assets.test.mjs tests/ui/view-model.test.mjs",
+    "check:production": "node scripts/check-production.mjs"
+  }
+}
