@@ -1,1 +1,1 @@
-phase4-task2 subscription lifecycle GREEN
+phase4-task3 verified entitlements RED
