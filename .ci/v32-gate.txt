@@ -1,1 +1,1 @@
-RED tests/v32/phase5-schema.test.js
+phase5-task6 tenant schema GREEN
