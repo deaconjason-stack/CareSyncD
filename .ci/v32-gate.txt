@@ -1,1 +1,1 @@
-phase4-task1 pricing policy RED
+phase4-task1 pricing policy GREEN
