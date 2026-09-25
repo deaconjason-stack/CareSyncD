@@ -8,7 +8,7 @@ const strong = {
 };
 
 test('all six approved units are available as starting specialty choices', () => {
-  assert.deepEqual(CAREER_TREES.specialty.startingNodes.sort(), [
+  assert.deepEqual([...CAREER_TREES.specialty.startingNodes].sort(), [
     'specialty-ed','specialty-icu','specialty-med-surg','specialty-ob','specialty-pediatrics','specialty-telemetry'
   ]);
   for (const nodeId of CAREER_TREES.specialty.startingNodes) {
