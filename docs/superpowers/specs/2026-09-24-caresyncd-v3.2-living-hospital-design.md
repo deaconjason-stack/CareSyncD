@@ -451,7 +451,7 @@ Automatic major-change triggers include:
 - removing grandfathering
 - material entitlement movement between plans
 - material organization pricing model change
-- excessive discount threshold
+- a promotion or discount greater than 25%
 - removal of a billing cadence
 
 All admin changes are auditable.
@@ -467,6 +467,8 @@ States:
 - Expired
 - Resubscribed
 - Grandfathered
+
+Default failed-payment grace period: 3 days, configurable by Founder.
 
 Account history is preserved after cancellation/expiration.
 
@@ -534,13 +536,13 @@ Secure backend handles:
 - audit history
 - PayPal webhook verification
 
-Initial recommended backend: Supabase or an equivalent replaceable service behind adapters. The simulation engine must not depend directly on vendor-specific APIs.
+Initial backend: Supabase, isolated behind repository adapters so the simulation and business-domain layers do not depend directly on vendor-specific APIs. This preserves a future migration path without redesigning the Living Hospital engine.
 
 Secrets, Founder privileges, PayPal credentials, and admin-only logic must never be shipped in the public GitHub frontend.
 
 ## 23. Offline entitlement behavior
 
-After successful authentication/entitlement validation, premium simulation may continue offline for a limited grace period using cached signed entitlement state.
+After successful authentication/entitlement validation, premium simulation may continue offline using cached entitlement state for a default maximum of 7 days. The Founder may shorten this window later through configuration, but extending it beyond 7 days requires an explicit future design decision.
 
 On reconnect:
 - progress syncs
