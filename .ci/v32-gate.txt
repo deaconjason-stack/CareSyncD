@@ -1,1 +1,1 @@
-phase4-task2 subscription lifecycle RED
+phase4-task2 subscription lifecycle GREEN
