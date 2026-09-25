@@ -36,8 +36,9 @@ export function createSimulationRun({ runId, kind, definitionId, definitionVersi
 }
 
 export function assertSimulationRun(record) {
-  if (!record || record.schemaVersion !== SCHEMA_VERSION) throw new Error('schemaVersion is unsupported');
+  if (!record || typeof record !== 'object') throw new Error('run is required');
   if (!record.runId) throw new Error('runId is required');
+  if (record.schemaVersion !== SCHEMA_VERSION) throw new Error('schemaVersion is unsupported');
   if (!['scenario','shift'].includes(record.kind)) throw new Error('kind must be scenario or shift');
   if (!record.definitionId) throw new Error('definitionId is required');
   if (!record.definitionVersion) throw new Error('definitionVersion is required');
