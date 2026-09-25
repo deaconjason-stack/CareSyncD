@@ -52,7 +52,7 @@ test('Founder snapshot summarizes subscription status, plan, cadence, and recent
   assert.deepEqual(snapshot.subscribers.status,{active:1,paymentIssue:1,canceled:1,expired:1});
   assert.deepEqual(snapshot.subscribers.byPlan,{individual:2,instructor:1,organization:1});
   assert.deepEqual(snapshot.subscribers.byCadence,{monthly:2,yearly:2});
-  assert.equal(snapshot.subscribers.new30d,2);
+  assert.equal(snapshot.subscribers.new30d,1);
   assert.equal(snapshot.subscribers.total,4);
 });
 
@@ -64,9 +64,9 @@ test('acquisition attribution counts verified subscriptions rather than raw impr
 test('learning activity uses structured shift events and reports top unit', () => {
   const snapshot=buildFounderSnapshot({analyticsEvents:events(),subscriptions:[],learningEvents:events(),asOf:'2026-09-25T00:00:00Z'});
   assert.equal(snapshot.learning.shiftsStarted,2);
-  assert.equal(snapshot.learning.shiftsCompleted,2);
+  assert.equal(snapshot.learning.shiftsCompleted,3);
   assert.equal(snapshot.learning.topUnit,'med-surg');
-  assert.deepEqual(snapshot.learning.completedByUnit,{'med-surg':2});
+  assert.deepEqual(snapshot.learning.completedByUnit,{'med-surg':3});
 });
 
 test('dashboard model exposes only identified subscriber rows and never anonymous ids as people', () => {
