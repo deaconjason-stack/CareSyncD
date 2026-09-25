@@ -1,1 +1,1 @@
-phase3-task6 PWA update safety GREEN
+phase3-task7 local-first integration acceptance
