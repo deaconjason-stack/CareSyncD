@@ -40,3 +40,73 @@ test('same seed and same actions produce identical state', () => {
   };
   assert.deepEqual(run(), run());
 });
+
+test('default engines run trajectories, operations, events, and consequences in one hospital tick', () => {
+  const trajectory = {
+    initial: 'watching',
+    states: {
+      watching: { reassessByMinute: 20, late: 'delayed-recognition' },
+      'delayed-recognition': {}
+    }
+  };
+  const state = baseWorld({
+    clock: { minute: 24, running: true },
+    patients: {
+      p1: {
+        id: 'p1', unitId: 'med-surg', pending: [],
+        trajectory: { definition: trajectory, state: 'watching', branch: 'baseline' }
+      }
+    },
+    decisions: [{ id: 'decision-1', type: 'REASSESS', patientId: 'p1', minute: 25 }],
+    staff: {
+      'cna-1': { id: 'cna-1', role: 'cna', available: true, workload: 0, queue: ['t1'] }
+    },
+    tasks: {
+      t1: { id: 't1', actionId: 'vitals', status: 'delegated', delegatedTo: 'cna-1', requiredTicks: 1, progressTicks: 0 }
+    },
+    events: [{
+      id: 'lab-return', level: 'patient', pressureCost: 1, prerequisites: [], cooldownKey: 'lab',
+      status: 'scheduled', scheduledMinute: 25
+    }]
+  });
+
+  const world = createHospitalWorld.withDefaultEngines({ state, rng: createSeededRng(99) });
+  const out = world.tick([]);
+
+  assert.equal(out.clock.minute, 25);
+  assert.equal(out.patients.p1.trajectory.state, 'delayed-recognition');
+  assert.equal(out.tasks.t1.status, 'complete');
+  assert.equal(out.events[0].status, 'active');
+  assert.equal(out.pendingConsequences.length, 0);
+  assert.equal(out.resolvedConsequences.length, 1);
+  assert.equal(out.timeline.at(-1).kind, 'TICK');
+});
+
+test('learner actions passed to tick are recorded before trajectory evaluation', () => {
+  const trajectory = {
+    initial: 'watching',
+    states: {
+      watching: { reassessByMinute: 20, onTime: 'improving', late: 'delayed-recognition' },
+      improving: {},
+      'delayed-recognition': {}
+    }
+  };
+  const state = baseWorld({
+    clock: { minute: 14, running: true },
+    patients: {
+      p1: {
+        id: 'p1', unitId: 'med-surg', pending: [],
+        trajectory: { definition: trajectory, state: 'watching', branch: 'baseline' }
+      }
+    }
+  });
+
+  const world = createHospitalWorld.withDefaultEngines({ state, rng: createSeededRng(42) });
+  const out = world.tick([{ type: 'REASSESS', patientId: 'p1' }]);
+
+  assert.equal(out.clock.minute, 15);
+  assert.equal(out.decisions.length, 1);
+  assert.equal(out.decisions[0].minute, 15);
+  assert.equal(out.patients.p1.trajectory.state, 'improving');
+  assert.ok(out.timeline.some(e => e.kind === 'DECISION' && e.actionType === 'REASSESS'));
+});

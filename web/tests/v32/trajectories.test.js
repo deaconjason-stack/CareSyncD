@@ -73,3 +73,15 @@ test('consequence resolver consumes each record once and links downstream eviden
   assert.match(once.resolvedConsequences[0].downstreamEventId, /^event-/);
   assert.deepEqual(twice.resolvedConsequences, once.resolvedConsequences);
 });
+
+test('delayed-recognition continues to its authored critical deadline despite an earlier late reassessment', () => {
+  let s = patientWorld(25);
+  s = recordDecision(s, { type: 'REASSESS', patientId: 'p1', minute: 25 });
+  s = advanceTrajectories(s, () => 0.5);
+  assert.equal(s.patients.p1.trajectory.state, 'delayed-recognition');
+
+  s = { ...s, clock: { ...s.clock, minute: 40 } };
+  s = advanceTrajectories(s, () => 0.5);
+  assert.equal(s.patients.p1.trajectory.state, 'critical');
+  assert.ok(s.timeline.some(e => e.kind === 'CRITICAL_DETERIORATION' && e.fromState === 'delayed-recognition'));
+});

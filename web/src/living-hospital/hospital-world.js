@@ -1,15 +1,31 @@
 import { advanceClock } from './hospital-clock.js';
+import { advanceTrajectories, recordDecision } from './trajectory-engine.js';
+import { advanceDelegatedTasks } from './delegation-engine.js';
+import { advanceBedFlow } from './census-engine.js';
+import { advanceScheduledEvents } from './event-engine.js';
+import { resolveConsequences } from './consequence-engine.js';
 
 const PIPELINE = ['clock', 'trajectories', 'operations', 'events', 'consequences', 'timeline'];
-const noOp = { advance: state => state };
 
 function defaultEngines() {
   return {
     clock: { advance: state => advanceClock(state, 1) },
-    trajectories: noOp,
-    operations: noOp,
-    events: noOp,
-    consequences: noOp,
+    trajectories: {
+      advance(state, context) {
+        const withDecisions = context.actions.reduce(
+          (next, action) => recordDecision(next, action),
+          state
+        );
+        return advanceTrajectories(withDecisions, context.rng);
+      }
+    },
+    operations: {
+      advance(state) {
+        return advanceBedFlow(advanceDelegatedTasks(state));
+      }
+    },
+    events: { advance: state => advanceScheduledEvents(state) },
+    consequences: { advance: state => resolveConsequences(state) },
     timeline: {
       advance(state, context) {
         return {

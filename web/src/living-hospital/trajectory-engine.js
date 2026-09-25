@@ -63,7 +63,11 @@ export function advanceTrajectories(state, rng) {
     } else if (
       Number.isFinite(rule.criticalByMinute) &&
       minute >= rule.criticalByMinute &&
-      (!reassess || reassess.minute > rule.criticalByMinute) &&
+      (
+        !Number.isFinite(rule.reassessByMinute) ||
+        !reassess ||
+        reassess.minute > rule.criticalByMinute
+      ) &&
       rule.critical
     ) {
       nextState = rule.critical;

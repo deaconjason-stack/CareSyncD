@@ -78,3 +78,23 @@ export function scheduleEvent(state, event) {
   };
   return { accepted: true, reason: null, state: nextState };
 }
+
+export function advanceScheduledEvents(state) {
+  let changed = false;
+  const events = (state.events ?? []).map(event => {
+    if (event.status !== 'scheduled' || event.scheduledMinute > state.clock.minute) return event;
+    changed = true;
+    return { ...event, status: 'active', activatedMinute: state.clock.minute };
+  });
+  if (!changed) return state;
+  return {
+    ...state,
+    events,
+    timeline: [
+      ...state.timeline,
+      ...events
+        .filter(event => event.activatedMinute === state.clock.minute)
+        .map(event => ({ kind: 'EVENT_ACTIVATED', eventId: event.id, level: event.level, minute: state.clock.minute }))
+    ]
+  };
+}
