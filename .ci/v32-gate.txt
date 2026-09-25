@@ -1,1 +1,1 @@
-baseline expected-red handling test
+RED tests/v32/ci-expected-red.test.js
