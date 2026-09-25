@@ -1,1 +1,1 @@
-RED tests/v32/analytics-event.test.js
+phase5-task1 analytics contract GREEN
