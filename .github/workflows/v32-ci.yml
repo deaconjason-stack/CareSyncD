@@ -1,9 +1,8 @@
 name: CareSyncD v3.2 CI
+
 on:
-  push:
-    branches: [v3.2-living-hospital]
-  pull_request:
-    branches: [v3.2-living-hospital]
+  workflow_dispatch:
+
 jobs:
   test:
     runs-on: ubuntu-latest
