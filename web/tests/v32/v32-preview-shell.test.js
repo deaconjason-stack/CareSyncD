@@ -68,12 +68,13 @@ test('Career, Founder, Organizations and Instructor Live surfaces are truthful a
   assert.doesNotMatch(instructor,/hidden observation|secretly observe/i);
 });
 
-test('browser shell exposes v3.2 routes without removing the existing mission and shift app',async()=>{
-  const [index,app]=await Promise.all([read('index.html'),read('app.js')]);
+test('browser shell exposes v3.2 routes through a bridge without removing the existing mission and shift app',async()=>{
+  const [index,app,entry]=await Promise.all([read('index.html'),read('app.js'),read('v32-entry.js')]);
   for(const route of ['living-hospital','career','organizations','instructor-live','founder']){
     assert.match(index,new RegExp(`data-nav=["']${route}["']`));
-    assert.match(app,new RegExp(route));
+    assert.match(entry,new RegExp(route));
   }
+  assert.match(index,/v32-entry\.js/);
   assert.match(index,/data-nav=["']missions["']/);
   assert.match(index,/data-nav=["']shifts["']/);
   assert.match(app,/SCENARIOS/);
