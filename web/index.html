@@ -4,34 +4,38 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#07131f">
-  <meta name="description" content="CareSyncD browser-native hospital-shift clinical education simulator">
+  <meta name="description" content="CareSyncD v3.2 Preview — The Living Hospital educational clinical simulation platform">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="./public/icons/icon-192.png">
   <link rel="stylesheet" href="./styles.css">
-  <title>CareSyncD — Clinical Judgment Under Pressure</title>
+  <title>CareSyncD v3.2 Preview — The Living Hospital</title>
 </head>
 <body>
   <a class="skip-link" href="#app-content">Skip to content</a>
   <div class="shell">
     <aside class="sidebar" aria-label="Primary navigation">
-      <div class="brand"><img src="./public/icons/icon-192.png" alt=""><div><strong>CareSyncD</strong><span>Clinical Judgment Under Pressure</span></div></div>
+      <div class="brand"><img src="./public/icons/icon-192.png" alt=""><div><strong>CareSyncD</strong><span>v3.2 Preview · The Living Hospital</span></div></div>
       <nav class="nav-list">
         <button data-nav="home">Home</button>
+        <button data-nav="living-hospital">The Living Hospital</button>
         <button data-nav="missions">Clinical Missions</button>
         <button data-nav="shifts">Hospital Shifts</button>
+        <button data-nav="career">Career</button>
         <button data-nav="progress">Progress</button>
         <button data-nav="debriefs">Debriefs</button>
-        <button data-nav="instructor">Instructor</button>
+        <button data-nav="organizations">Organizations</button>
+        <button data-nav="instructor-live">Instructor Live</button>
+        <button data-nav="founder">Founder Command Center</button>
         <button data-nav="settings">Settings</button>
       </nav>
-      <div class="safety-note">Educational simulation only. Not for real-patient diagnosis, monitoring, or treatment.</div>
+      <div class="safety-note">Educational simulation only. Not for real-patient diagnosis, monitoring, treatment, or clinical decision support. Never enter PHI.</div>
     </aside>
-    <main id="app-content" tabindex="-1"><div class="loading">Loading CareSyncD…</div></main>
+    <main id="app-content" tabindex="-1"><div class="loading">Loading CareSyncD v3.2 Preview…</div></main>
   </div>
   <nav class="mobile-nav" aria-label="Mobile navigation">
-    <button data-nav="home">Home</button><button data-nav="missions">Missions</button><button data-nav="shifts">Shifts</button><button data-nav="progress">Progress</button><button data-nav="settings">More</button>
+    <button data-nav="home">Home</button><button data-nav="living-hospital">Hospital</button><button data-nav="missions">Missions</button><button data-nav="career">Career</button><button data-nav="settings">More</button>
   </nav>
   <div id="toast-region" class="toast-region" aria-live="polite"></div>
-  <script type="module" src="./app.js"></script>
+  <script type="module" src="./v32-entry.js"></script>
 </body>
 </html>
