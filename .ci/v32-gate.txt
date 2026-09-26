@@ -1,1 +1,1 @@
-phase6 task3 v3.2 PWA release GREEN
+RED tests/v32/phase6-integration.test.js
