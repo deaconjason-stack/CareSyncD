@@ -1,1 +1,1 @@
-RED tests/v32/v32-pwa-release.test.js
+phase6 task3 v3.2 PWA release GREEN
