@@ -1,1 +1,1 @@
-phase6 task1 preview shell GREEN
+phase6 task1 preview shell GREEN retry
