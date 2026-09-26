@@ -1,0 +1,47 @@
+export const SCHEMA_VERSION = 32;
+const clone = value => typeof structuredClone === 'function' ? structuredClone(value) : JSON.parse(JSON.stringify(value));
+
+export function createLearnerProfile({ learnerId, displayName = 'Learner', xp = 0, rank = 'Clinical Explorer', achievements = [], preferences = {}, competencyHistory = [] } = {}) {
+  if (!learnerId) throw new Error('learnerId is required');
+  const now = new Date().toISOString();
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    learnerId,
+    displayName: String(displayName).slice(0,80),
+    xp,
+    rank,
+    achievements:[...achievements],
+    preferences:clone(preferences),
+    competencyHistory:clone(competencyHistory),
+    createdAt:now,
+    updatedAt:now
+  };
+}
+
+export function createSimulationRun({ runId, kind, definitionId, definitionVersion, difficulty='standard', startTime=new Date().toISOString(), state=null } = {}) {
+  const record = {
+    schemaVersion: SCHEMA_VERSION,
+    runId,
+    kind,
+    definitionId,
+    definitionVersion,
+    difficulty,
+    startTime,
+    endTime:null,
+    status:'active',
+    state:clone(state)
+  };
+  assertSimulationRun(record);
+  return record;
+}
+
+export function assertSimulationRun(record) {
+  if (!record || typeof record !== 'object') throw new Error('run is required');
+  if (!record.runId) throw new Error('runId is required');
+  if (record.schemaVersion !== SCHEMA_VERSION) throw new Error('schemaVersion is unsupported');
+  if (!['scenario','shift'].includes(record.kind)) throw new Error('kind must be scenario or shift');
+  if (!record.definitionId) throw new Error('definitionId is required');
+  if (!record.definitionVersion) throw new Error('definitionVersion is required');
+  if (!['active','complete','abandoned'].includes(record.status)) throw new Error('status is invalid');
+  return record;
+}
