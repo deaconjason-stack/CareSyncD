@@ -1,7 +1,7 @@
 {
-  "name": "CareSyncD — Clinical Judgment Under Pressure",
+  "name": "CareSyncD v3.2 Preview — The Living Hospital",
   "short_name": "CareSyncD",
-  "description": "Offline-capable hospital-shift clinical education simulation.",
+  "description": "Offline-capable educational hospital simulation with Living Hospital career and instructor workflows.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
